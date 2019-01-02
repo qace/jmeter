@@ -85,14 +85,36 @@ CMD /opt/jmeter/bin/jmeter.sh
 # Docker build -t jmeter .
 
 
-# To run with GUI (doesn't work with macOS see https://sourabhbajaj.com/blog/2017/02/07/gui-applications-docker-mac/)
+# To run with GUI
 
-# docker run -ti --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix jmeter
+# Linux:
+
+#### docker run -ti --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix <jmeter-image>
+
+# For JMeter GUI container to work on macOS follow this:
+
+# brew cask install xquartz
+# open -a XQuartz
+# In the XQuartz preferences, go to the “Security” tab and make sure you’ve got “Allow connections from network clients” ticked
+#
+# IP=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
+# should set the IP variable as the ip of your local machine. If you’re on wifi you may want to use en1 instead of en0, check the value of the variable using echo $IP
+# Now add the IP using Xhost with $IP
+#
+# xhost + $IP
+# Run the JMeter container in GUI mode:
+#
+#### docker run -ti --rm -e DISPLAY=$IP:0 -v /tmp/.X11-unix:/tmp/.X11-unix <jmeter-image>
+
+
 
 # Run container with jmeter headless:
 
-# docker run -it --rm  --name jmeter -v /Users/${user}/jmeter/qppar/:/home/developer  jmeter /bin/bash
-
+# docker run -it --rm  --name jmeter -v /Users/<user>/<jmxScriptsDirectory>/:/home/developer  jmeter /bin/bash
 # Run the jmx Test plans:
+# jmeter -n -t Dash.jmx -l results.jtl
 
-# jmeter -n -t 3875b.jmx -l results.jtl
+
+# Run jmeter scripts directly without entering container:
+
+# docker run -it --rm  --name jmeter -v /Users/<user>/<jmxScriptsDirectory>/:/home/developer  <jmeter-container> jmeter -n -t <jmeter-script>.jmx -l results.jtl
