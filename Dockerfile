@@ -43,7 +43,7 @@ RUN wget http://www.us.apache.org/dist/jmeter/binaries/apache-jmeter-${jmeter_ve
 	&& echo Installing the postgresSQL JDBC driver https://jdbc.postgresql.org/download.html \
 	&& wget --content-disposition https://jdbc.postgresql.org/download/postgresql-42.2.5.jar \
 	&& mv postgresql-42.2.5.jar /opt/jmeter/lib/ \
-	&& echo 4- Successfully installed the postgresql-42.2.5.jar in /opt/jmeter/lib/ \
+	&& echo 4- Successfully installed the postgresql-42.2.5.jar in /opt/jmeter/lib/
 	# && echo Installing the jenkins slave agent ... \
 	#  change the jenkins server ip and port below
 	# && wget --content-disposition https://jenkinsURL.com:8080/jnlpJars/slave.jar \
