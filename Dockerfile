@@ -38,11 +38,17 @@ RUN wget http://www.us.apache.org/dist/jmeter/binaries/apache-jmeter-${jmeter_ve
 	&& jmpl=$(curl -s https://jmeter-plugins.org/repo/ | jq '.[] | select(."id" | contains("jpgc-sense","jpgc-webdriver","jpgc-standard","jpgc-graphs-basic","jpgc-graphs-additional","jpgc-perfmon","jpgc-casutg"))' | jq ."id" | tr '\n' ',' | sed 's/"//g' | sed s'/.$//') \
 	&& echo ${jmpl} \
 	&& sh PluginsManagerCMD.sh install ${jmpl} \
-	&& echo 3- Successfully installed the jmeter plugins
+	&& echo 3- Successfully installed the jmeter plugins \
+	# JDBC needed to run Queries:
+	&& echo Installing the postgresSQL JDBC driver https://jdbc.postgresql.org/download.html \
+	&& wget --content-disposition https://jdbc.postgresql.org/download/postgresql-42.2.5.jar \
+	&& mv postgresql-42.2.5.jar /opt/jmeter/lib/ \
+	&& echo 4- Successfully installed the postgresql-42.2.5.jar in /opt/jmeter/lib/ \
+	# && echo Installing the jenkins slave agent ... \
 	#  change the jenkins server ip and port below
 	# && wget --content-disposition https://jenkinsURL.com:8080/jnlpJars/slave.jar \
 	# && mv slave.jar /opt/jmeter/ \
-	# && echo 4- downloaded the Jenkins slave.jar file to /opt/jmeter directory
+	# && echo 5- downloaded the Jenkins slave.jar file to /opt/jmeter directory
 
 
 ENV PATH /opt/jmeter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
